@@ -22,7 +22,7 @@ export default function AppShell({ children }) {
     setMenuOpen(false)
     window.scrollTo({ top: 0, behavior: 'auto' })
 
-    const slug = location.pathname.match(/^\/projects\/([^/]+)$/)?.[1]
+    const slug = location.pathname.match(/^\/projects\/([^/]+)\/?$/)?.[1]
     const project = projects.find((item) => item.slug === slug)
     const description = document.querySelector('meta[name="description"]')
 
