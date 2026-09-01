@@ -18,7 +18,7 @@ npm run build
 npm run preview
 ```
 
-构建脚本会生成 `dist/404.html`，用于 GitHub Pages 子路由刷新回退。
+构建脚本会为三个案例生成静态入口，并保留 `dist/404.html` 处理未知路径。
 
 ## 公开边界
 

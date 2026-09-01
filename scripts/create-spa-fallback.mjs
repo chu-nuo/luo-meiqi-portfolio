@@ -1,9 +1,19 @@
-import { writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 
 const configuredBase = process.env.PORTFOLIO_BASE || '/'
 const basePath = configuredBase === '/'
   ? '/'
   : `/${configuredBase.replace(/^\/+|\/+$/g, '')}/`
+const distIndexUrl = new URL('../dist/index.html', import.meta.url)
+const indexDocument = await readFile(distIndexUrl, 'utf8')
+const projectSlugs = ['yijiajia', 'ai-english', 'changan']
+
+for (const slug of projectSlugs) {
+  const routeDirectory = new URL(`../dist/projects/${slug}/`, import.meta.url)
+  await mkdir(routeDirectory, { recursive: true })
+  await writeFile(new URL('index.html', routeDirectory), indexDocument)
+}
+
 const redirectDocument = `<!doctype html>
 <html lang="zh-CN">
   <head>
