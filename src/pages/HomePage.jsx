@@ -1,4 +1,5 @@
 import { ArrowRight, CaretLeft, CaretRight, EnvelopeSimple, FileText, List, MapPin, X } from '@phosphor-icons/react'
+import { Link } from 'react-router-dom'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { experiences, profile, projects } from '../data'
 import '../replica.css'
@@ -251,7 +252,6 @@ function SelectedWork() {
     { label: '大广赛', title: '用“五色青丝”串联端午文化、品牌体验与校园传播。', points: ['3 人团队统筹', '限定礼盒与快闪店', 'H5 测试与传播矩阵', '省级三等奖'], project: projects[3] },
   ]
   const item = tabs[active]
-  const preview = item.project.visuals[0]
 
   return (
     <section id="selected-work" className="replica-section work-section">
@@ -266,16 +266,20 @@ function SelectedWork() {
             </button>
           ))}
         </div>
-        <article className="work-detail" key={item.label}>
-          <figure className={`work-preview visual-${item.project.slug}`}>
-            <img src={preview.src} alt={preview.alt} />
-            <figcaption><span className="mono">ACTIVE PREVIEW / 0{active + 1}</span><strong>{item.label}</strong></figcaption>
-          </figure>
+        <article className="work-detail work-text-detail" key={item.label}>
+          <div className="work-detail-intro">
+            <p className="mono eyebrow">PROJECT / 0{active + 1}</p>
+            <p className="work-detail-kind">{item.project.kind}</p>
+            <h3>{item.project.title}</h3>
+            <p className="work-detail-summary">{item.title}</p>
+          </div>
           <div className="work-detail-copy">
-            <p className="mono eyebrow">PRODUCT SYSTEM / 2026</p>
-            <h3>{item.title}</h3>
-            <ul>{item.points.map((point) => <li key={point}>{point}</li>)}</ul>
-            <div className="work-detail-footer"><span>{item.project.kind}</span><a href={`/projects/${item.project.slug}`}>查看案例 <ArrowRight size={15} /></a></div>
+            <p className="mono eyebrow">WHAT I BUILT</p>
+            <p className="work-detail-lead">{item.project.lead}</p>
+            <div className="work-function-list">
+              {item.points.map((point) => <span key={point}>{point}</span>)}
+            </div>
+            <div className="work-detail-footer"><span>{item.project.time} · {item.project.role}</span><Link to={`/projects/${item.project.slug}`}>进入工作页面 <ArrowRight size={15} /></Link></div>
           </div>
         </article>
       </div>
