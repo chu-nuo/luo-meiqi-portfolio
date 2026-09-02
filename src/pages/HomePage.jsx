@@ -20,6 +20,7 @@ function InkTrail() {
     const context = canvas.getContext('2d')
     if (!context) return undefined
     const points = []
+    const pointer = { x: 0, y: 0, active: false }
     let width = 0
     let height = 0
     let frame = 0
@@ -37,17 +38,25 @@ function InkTrail() {
     }
     const addPoint = (event) => {
       const point = { x: event.clientX, y: event.clientY }
-      if (lastPoint && Math.hypot(point.x - lastPoint.x, point.y - lastPoint.y) < 8) return
+      pointer.x = point.x
+      pointer.y = point.y
+      pointer.active = true
+      if (lastPoint && Math.hypot(point.x - lastPoint.x, point.y - lastPoint.y) < 5) return
       lastPoint = point
-      points.push({ ...point, radius: 18 + Math.random() * 20, life: 1 })
-      if (points.length > 80) points.shift()
+      points.push({ ...point, radius: 16 + Math.random() * 18, life: 1 })
+      if (points.length > 36) points.shift()
+    }
+    const stopTrail = () => {
+      pointer.active = false
+      lastPoint = null
+      points.forEach((point) => { point.life *= 0.22 })
     }
     const render = () => {
-      context.fillStyle = 'rgba(245,245,243,.09)'
+      context.fillStyle = 'rgba(245,245,243,.14)'
       context.fillRect(0, 0, width, height)
       for (let index = points.length - 1; index >= 0; index -= 1) {
         const point = points[index]
-        point.life -= 0.018
+        point.life -= 0.055
         point.radius *= 1.012
         if (point.life <= 0) {
           points.splice(index, 1)
@@ -62,17 +71,31 @@ function InkTrail() {
         context.arc(point.x, point.y, point.radius, 0, Math.PI * 2)
         context.fill()
       }
+      if (pointer.active) {
+        const brush = context.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 30)
+        brush.addColorStop(0, 'rgba(0,47,167,.22)')
+        brush.addColorStop(.45, 'rgba(61,106,232,.11)')
+        brush.addColorStop(1, 'rgba(61,106,232,0)')
+        context.fillStyle = brush
+        context.beginPath()
+        context.arc(pointer.x, pointer.y, 30, 0, Math.PI * 2)
+        context.fill()
+      }
       frame = window.requestAnimationFrame(render)
     }
 
     resize()
     window.addEventListener('resize', resize)
     window.addEventListener('pointermove', addPoint, { passive: true })
+    window.addEventListener('blur', stopTrail)
+    document.addEventListener('mouseleave', stopTrail)
     frame = window.requestAnimationFrame(render)
     return () => {
       window.cancelAnimationFrame(frame)
       window.removeEventListener('resize', resize)
       window.removeEventListener('pointermove', addPoint)
+      window.removeEventListener('blur', stopTrail)
+      document.removeEventListener('mouseleave', stopTrail)
     }
   }, [])
 
@@ -137,6 +160,7 @@ function Hero() {
   return (
     <section id="hero" className="replica-hero">
       <InkTrail />
+      <div className="hero-left-orb" aria-hidden="true" />
       <div className="hero-copy">
         <p className="mono eyebrow">AI PRODUCT MANAGER · SELECTED WORK</p>
         <h1>把复杂问题，<em>做成可体验的产品。</em></h1>
@@ -147,7 +171,13 @@ function Hero() {
         </div>
         <p className="hero-meta">天津财经大学珠江学院 · 视觉传达设计 · 2027 届 · 意向城市：杭州</p>
       </div>
-      <OrbitNav />
+      <div className="hero-stage">
+        <OrbitNav />
+        <figure className="hero-cover">
+          <img src={`${import.meta.env.BASE_URL}projects/changan/cover.webp`} alt="长安的荔枝主题团建策划案封面" />
+          <figcaption><span className="mono">SELECTED WORK / 03</span><strong>长安的荔枝</strong></figcaption>
+        </figure>
+      </div>
     </section>
   )
 }
@@ -193,18 +223,20 @@ function SectionHeading({ index, title, text }) {
 function About() {
   return (
     <section id="about" className="replica-section about-section">
-      <div>
-        <SectionHeading index="01" title="About" text="从视觉传达设计出发，把用户洞察、内容表达与 AI 产品机制连接起来。" />
-        <div className="about-copy">
-          <p>我目前就读于<strong>天津财经大学珠江学院</strong>视觉传达设计专业，本科预计<strong>2027 年 6 月毕业</strong>。</p>
-          <p>GPA <strong>3.74 / 4.00</strong>，专业前 10%；新媒体运营 93、DV 影像 92、PS 图片设计 92、广告创意设计 90。</p>
-          <p>曾获<strong>院三好学生、优秀班干部、三等奖学金</strong>与 2 次单科奖学金，持续把视觉训练迁移到产品表达与体验设计。</p>
-        </div>
+      <div className="about-portrait">
+        <img src={`${import.meta.env.BASE_URL}profile-photo.jpg`} alt="罗美琪个人照片" loading="lazy" />
+        <span className="mono">OBSERVE / FRAME / SHIP</span>
       </div>
-      <div className="about-visual">
-        <div className="about-orb" />
-        <img src={`${import.meta.env.BASE_URL}projects/changan/cover.webp`} alt="长安的荔枝项目视觉封面" loading="lazy" />
-        <span className="mono">RESEARCH / PRODUCT / FIELD NOTES</span>
+      <div className="about-content">
+        <SectionHeading index="01" title="About" text="从视觉传达设计出发，把用户洞察、内容表达与 AI 产品机制连接起来。" />
+        <p className="about-manifesto">I like messy problems.<br />I trace them to a <em>mechanism</em>,<br />then turn it into a product people can use.</p>
+        <div className="about-tags"><span>CONSUMER AI</span><span>PRODUCT STRATEGY</span><span>AI WORKFLOW</span></div>
+        <div className="about-copy">
+          <p>我的经历从互联网产品延伸到 AI 产品，从 C 端英语学习与内容体验走向 B 端门店工作台。</p>
+          <p>我曾在百词斩负责英语读书“每日任务”，也在易佳佳参与多智能体、RAG 知识治理、消息中心与 AI-Human 服务闭环。</p>
+          <p>视觉传达设计训练让我重视信息层级与体验表达，而产品实践让我持续把洞察转成流程、原型和可交付方案。</p>
+          <p className="about-education">天津财经大学珠江学院 · 视觉传达设计 · 2027 届</p>
+        </div>
       </div>
     </section>
   )

@@ -17,6 +17,8 @@
 .replica-menu-button { display:none; place-items:center; width:34px; height:34px; padding:0; border:1px solid rgba(0,47,167,.4); background:transparent; color:var(--replica-blue); cursor:pointer; }
 .replica-hero { position:relative; min-height:calc(100dvh - 60px); display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.8fr); align-items:center; padding:clamp(60px,9vw,120px) clamp(24px,8vw,120px); isolation:isolate; }
 .hero-copy { position:relative; z-index:3; max-width:720px; }
+.ink-canvas { position:fixed; inset:0; z-index:1; width:100vw; height:100vh; pointer-events:none; }
+.hero-left-orb { position:absolute; left:clamp(46px,14vw,220px); top:50%; z-index:1; width:clamp(190px,24vw,320px); aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 45% 45%,rgba(0,47,167,.54) 0%,rgba(61,106,232,.31) 35%,rgba(61,106,232,0) 72%); filter:blur(24px); opacity:.72; pointer-events:none; transform:translate(-50%,-50%); animation:hero-orb-breathe 5.8s ease-in-out infinite; }
 .eyebrow { margin:0 0 21px; color:var(--replica-blue); font-size:10px; }
 .hero-copy h1 { max-width:680px; margin:0; color:var(--replica-blue); font:400 clamp(46px,7vw,88px)/.98 "Cormorant Garamond",Georgia,serif; letter-spacing:-.045em; }
 .hero-copy h1 em { display:block; color:var(--replica-text); font-style:italic; }
@@ -30,6 +32,13 @@
 .replica-button.secondary { color:var(--replica-blue); }
 .replica-button.secondary:hover { background:var(--replica-blue); color:#fff; }
 .hero-meta { margin:17px 0 0; color:var(--replica-muted); font:9px/1.5 "JetBrains Mono",monospace; letter-spacing:.08em; text-transform:uppercase; }
+.hero-stage { position:relative; z-index:2; justify-self:end; width:min(44vw,620px); aspect-ratio:1; }
+.hero-stage .orbit-nav { width:100%; height:100%; }
+.hero-cover { position:absolute; right:4%; bottom:4%; z-index:4; width:min(180px,26%); margin:0; border:1px solid var(--replica-line); background:#fff; box-shadow:0 18px 45px rgba(26,26,26,.16); transform:rotate(4deg); }
+.hero-cover img { display:block; width:100%; aspect-ratio:4/5; object-fit:cover; }
+.hero-cover figcaption { display:grid; gap:4px; padding:8px 10px; }
+.hero-cover figcaption span { color:var(--replica-blue); font-size:7px; }
+.hero-cover figcaption strong { font:500 14px/1.1 "Cormorant Garamond",Georgia,serif; }
 .ink-layer { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
 .ink-mark { position:absolute; width:22px; height:22px; border-radius:50%; background:radial-gradient(circle,var(--replica-blue-light),transparent 68%); opacity:.18; filter:blur(8px); transform:translate(-50%,-50%); animation:ink-fade .8s ease-out forwards; }
 .orbit-nav { position:relative; z-index:2; justify-self:end; width:min(42vw,620px); aspect-ratio:1; }
@@ -45,14 +54,22 @@
 .replica-heading { max-width:800px; margin-bottom:62px; }
 .replica-heading h2 { margin:0; font:400 clamp(44px,7vw,82px)/.96 "Cormorant Garamond",Georgia,serif; letter-spacing:-.045em; }
 .replica-heading > p:last-child { max-width:620px; margin:20px 0 0; color:var(--replica-muted); font-size:14px; line-height:1.8; }
-.about-section { display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,.7fr); gap:clamp(50px,9vw,120px); align-items:center; }
-.about-copy { max-width:720px; font:400 clamp(21px,2.6vw,34px)/1.62 "Cormorant Garamond",Georgia,serif; }
-.about-copy p { margin:0 0 18px; }
+.about-section { display:grid; grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr); gap:clamp(50px,9vw,120px); align-items:start; }
+.about-portrait { position:relative; max-width:380px; }
+.about-portrait img { display:block; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:center top; filter:saturate(.85); border:1px solid var(--replica-line); }
+.about-portrait span { display:block; margin-top:14px; color:var(--replica-muted); font-size:9px; }
+.about-content { max-width:720px; }
+.about-content .replica-heading { margin-bottom:28px; }
+.about-content .replica-heading h2 { font-size:clamp(42px,5vw,64px); }
+.about-manifesto { max-width:680px; margin:0; font:400 clamp(29px,3.8vw,52px)/1.14 "Cormorant Garamond",Georgia,serif; letter-spacing:-.035em; }
+.about-manifesto em { color:var(--replica-blue); font-style:normal; }
+.about-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; }
+.about-tags span { padding:9px 12px; border:1px solid rgba(0,47,167,.35); color:var(--replica-blue); font:9px/1 "JetBrains Mono",monospace; letter-spacing:.14em; }
+.about-copy { max-width:650px; margin-top:30px; color:var(--replica-muted); font:400 15px/1.85 "Noto Sans SC","Segoe UI",sans-serif; }
+.about-copy p { margin:0 0 13px; }
 .about-copy strong { color:var(--replica-blue); font-weight:500; }
-.about-visual { position:relative; max-width:420px; justify-self:end; }
-.about-visual img { position:relative; z-index:1; width:100%; aspect-ratio:4/5; object-fit:cover; filter:saturate(.8); border:1px solid var(--replica-line); }
-.about-visual span { display:block; margin-top:14px; color:var(--replica-muted); font-size:9px; }
-.about-orb { position:absolute; right:-32px; top:30%; width:150px; height:150px; border-radius:50%; background:radial-gradient(circle,#002fa7,transparent 68%); filter:blur(34px); opacity:.24; animation:orb-breathe 6s ease-in-out infinite; }
+.about-education { color:var(--replica-blue); font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.08em; }
+.about-copy strong { color:var(--replica-blue); font-weight:500; }
 .work-layout { display:grid; grid-template-columns:minmax(280px,.85fr) minmax(0,1.15fr); gap:clamp(38px,8vw,120px); }
 .work-tabs { border-top:1px solid var(--replica-line); }
 .work-tab { width:100%; display:grid; grid-template-columns:44px minmax(0,1fr) 20px; gap:13px; align-items:center; padding:24px 0; border:0; border-bottom:1px solid var(--replica-line); background:transparent; color:var(--replica-muted); text-align:left; cursor:pointer; transition:color .2s,transform .2s; }
@@ -128,6 +145,7 @@
 .orbit-ring.is-exploding { animation:orbit-explode .7s cubic-bezier(.16,1,.3,1) both; }
 .orbit-orb.is-exploding { animation:orb-explode .7s ease-out both; }
 @keyframes orb-breathe { 0%,100% { transform:translate(-50%,-50%) scale(1); opacity:.58; } 50% { transform:translate(-50%,-50%) scale(1.25); opacity:.38; } }
+@keyframes hero-orb-breathe { 0%,100% { transform:translate(-50%,-50%) scale(.92); opacity:.58; } 50% { transform:translate(-50%,-50%) scale(1.16); opacity:.82; } }
 @keyframes orb-explode { 0% { transform:translate(-50%,-50%) scale(1); opacity:.58; } 45% { transform:translate(-50%,-50%) scale(3.4); opacity:.22; } 100% { transform:translate(-50%,-50%) scale(1); opacity:.58; } }
 @keyframes orbit-explode { 0% { transform:scale(1) rotate(0); opacity:1; } 45% { transform:scale(1.1) rotate(10deg); opacity:.3; } 100% { transform:scale(1) rotate(0); opacity:1; } }
 @keyframes ink-fade { from { opacity:.18; transform:translate(-50%,-50%) scale(.5); } to { opacity:0; transform:translate(-50%,-50%) scale(4); } }
@@ -146,6 +164,22 @@
 @media (max-width:900px) { .replica-nav { grid-template-columns:1fr auto; } .replica-nav nav { position:absolute; top:100%; right:0; left:0; display:grid; max-height:0; overflow:hidden; padding:0 20px; border-bottom:1px solid transparent; background:rgba(245,245,243,.98); opacity:0; pointer-events:none; transition:max-height .3s ease,opacity .2s,padding .3s,border-color .3s; } .replica-nav.menu-open nav { max-height:330px; padding:12px 20px 22px; border-color:var(--replica-line); opacity:1; pointer-events:auto; } .replica-nav nav a { padding:14px 0; border-bottom:1px solid var(--replica-line); } .replica-menu-button { display:grid; } .replica-hero { grid-template-columns:1fr; min-height:auto; padding-top:82px; } .orbit-nav { width:min(80vw,480px); justify-self:center; margin-top:48px; } .about-section,.work-layout { grid-template-columns:1fr; } .about-visual { justify-self:start; width:min(420px,100%); } .work-detail { grid-template-columns:1fr; min-height:0; } .work-preview { min-height:300px; } }
 @media (max-width:640px) { .replica-nav { min-height:54px; padding-inline:16px; } .replica-brand span { font-size:8px; } .replica-nav-actions a { width:34px; padding:0; justify-content:center; } .replica-nav-actions span { display:none; } .replica-section { width:min(100% - 30px,1220px); padding-block:84px; } .replica-hero { padding:58px 15px 72px; } .hero-copy h1 { font-size:clamp(48px,14vw,72px); } .hero-actions { display:grid; grid-template-columns:1fr; } .replica-button { width:100%; justify-content:center; } .orbit-nav { width:100%; } .orbit-ring text { font-size:9px; letter-spacing:2px; } .orbit-orb { width:150px; height:150px; } .about-copy { font-size:25px; } .work-tab { grid-template-columns:32px 1fr 18px; } .work-tab strong { font-size:27px; } .work-detail-copy { padding:28px 22px; } .work-detail ul { grid-template-columns:1fr; } .work-preview { min-height:240px; } .experience-cards { min-height:430px; } .experience-card { width:calc(100% - 30px); min-height:400px; padding:24px; } .experience-card h3 { margin-top:34px; font-size:28px; } .flipbook-wrap { grid-template-columns:34px minmax(0,1fr) 34px; gap:8px; } .flipbook { aspect-ratio:.82; } .flipbook-cover,.flipbook-end,.book-sheet { left:0; width:100%; } .flipbook-cover { display:none; } .book-sheet { transform-origin:left center; } .book-front img { height:70%; } .book-back { padding:24px; } .flipbook-end { z-index:0; } .contact-section { min-height:480px; } .replica-footer { align-items:flex-start; gap:12px; flex-direction:column; } }
 @media (prefers-reduced-motion:reduce) { .replica-page *, .replica-page *::before, .replica-page *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } .ink-canvas { display:none; } }
+
+@media (max-width:900px) {
+  .hero-stage { width:min(88vw,520px); justify-self:center; margin-top:20px; }
+  .hero-cover { width:145px; right:0; bottom:2%; }
+  .about-portrait { width:min(260px,72vw); }
+  .about-content { margin-top:12px; }
+  .hero-left-orb { left:18%; top:45%; width:220px; opacity:.48; }
+}
+
+@media (max-width:640px) {
+  .hero-stage { width:100%; margin-top:10px; }
+  .hero-cover { width:126px; }
+  .hero-left-orb { left:20%; top:48%; width:170px; }
+  .about-manifesto { font-size:clamp(28px,8.5vw,40px); }
+  .about-copy { font-size:15px; }
+}
 
 
 .replica-mode .skip-link { display:none; }
