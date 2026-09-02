@@ -6,7 +6,7 @@ import {
   MapPin,
 } from '@phosphor-icons/react'
 import { useState } from 'react'
-import ProjectRow from '../components/ProjectRow'
+import SelectedWork from '../components/SelectedWork'
 import Reveal from '../components/Reveal'
 import { capabilityGroups, experiences, profile, projects, sideWork } from '../data'
 
@@ -25,10 +25,11 @@ export default function HomePage() {
 
   return (
     <main id="main-content" tabIndex="-1">
-      <section className="hero section-shell" aria-labelledby="hero-title">
+      <section className="hero editorial-hero section-shell" aria-labelledby="hero-title">
+        <div className="hero-index" aria-hidden="true">01<span> / 05</span></div>
         <div className="hero-copy">
-          <p className="eyebrow">2027 届 AI 产品经理候选人</p>
-          <h1 id="hero-title">把 AI 方案做进<br />真实业务流程</h1>
+          <p className="eyebrow">2027 届 · AI 产品经理候选人</p>
+          <h1 id="hero-title">把 AI 方案<br /><em>做进真实业务</em></h1>
           <p className="hero-intro">{profile.positioning}</p>
           <div className="hero-actions">
             <a className="button button-primary" href="#work">
@@ -51,9 +52,9 @@ export default function HomePage() {
             />
           </div>
           <figcaption>
-            <span>代表案例</span>
+            <span>SELECTED WORK / 01</span>
             <strong>易佳佳 AI 门店助手</strong>
-            <small>当前版本界面，已完成公开信息检查</small>
+            <small>当前版本界面 · 已完成公开信息检查</small>
           </figcaption>
         </figure>
       </section>
@@ -68,18 +69,7 @@ export default function HomePage() {
       </section>
 
       <Reveal>
-        <section className="section-shell work-section" id="work" aria-labelledby="work-title">
-          <header className="section-intro">
-            <span className="section-kicker">代表案例</span>
-            <h2 id="work-title">三种产品问题，三套落地方法。</h2>
-            <p>每个案例都说明问题、关键判断、真实产出和证据边界。没有公开证明的数据，不会被包装成结果。</p>
-          </header>
-          <div className="project-grid">
-            {projects.map((project, index) => (
-              <ProjectRow key={project.slug} project={project} featured={index === 0} />
-            ))}
-          </div>
-        </section>
+        <SelectedWork projects={projects} />
       </Reveal>
 
       <Reveal>
