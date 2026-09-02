@@ -49,9 +49,9 @@ export default function AppShell({ children }) {
 
   const homeHref = import.meta.env.BASE_URL
   const navItems = [
-    { label: '案例', href: `${homeHref}#work` },
+    { label: '案例', href: `${homeHref}#selected-work` },
+    { label: '关于', href: `${homeHref}#about` },
     { label: '经历', href: `${homeHref}#experience` },
-    { label: '能力', href: `${homeHref}#skills` },
     { label: '联系', href: `${homeHref}#contact` },
   ]
 
@@ -97,7 +97,7 @@ export default function AppShell({ children }) {
           <strong>罗美琪</strong>
           <span>AI 产品经理 / 产品经理</span>
         </div>
-        <p>内容与材料整理于 2026.08</p>
+        <p>内容与材料整理于 2026.09</p>
       </footer>
     </>
   )

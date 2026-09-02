@@ -188,6 +188,7 @@ img { display: block; max-width: 100%; }
 .case-hero-visual img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .case-hero-visual.visual-yijiajia { background: var(--surface-2); }
 .case-hero-visual.visual-yijiajia img { object-fit: contain; }
+.case-hero-visual.visual-ai-english img { object-fit: contain; object-position: top center; background: var(--surface-2); padding: 20px; }
 .case-hero-visual figcaption { padding: 13px 16px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .case-meta { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; border-block: 1px solid var(--line); }
 .case-meta > div { padding: 18px 20px; border-right: 1px solid var(--line); }

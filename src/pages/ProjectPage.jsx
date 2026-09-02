@@ -30,7 +30,7 @@ export default function ProjectPage() {
     <main id="main-content" className="case-page" tabIndex="-1">
       <section className="case-hero section-shell">
         <div className="case-hero-copy">
-          <Link className="back-link" to="/#work"><ArrowLeft size={18} />返回案例列表</Link>
+          <Link className="back-link" to="/#selected-work"><ArrowLeft size={18} />返回案例列表</Link>
           <p className="project-kind">{project.kind}</p>
           <h1>{project.title}</h1>
           <p className="case-subtitle">{project.subtitle}</p>

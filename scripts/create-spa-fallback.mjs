@@ -6,7 +6,7 @@ const basePath = configuredBase === '/'
   : `/${configuredBase.replace(/^\/+|\/+$/g, '')}/`
 const distIndexUrl = new URL('../dist/index.html', import.meta.url)
 const indexDocument = await readFile(distIndexUrl, 'utf8')
-const projectSlugs = ['yijiajia', 'ai-english', 'changan']
+const projectSlugs = ['yijiajia', 'ai-english', 'changan', 'yangyuanqing']
 
 for (const slug of projectSlugs) {
   const routeDirectory = new URL(`../dist/projects/${slug}/`, import.meta.url)
