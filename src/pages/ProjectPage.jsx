@@ -7,6 +7,7 @@ import {
   FileText,
 } from '@phosphor-icons/react'
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import Reveal from '../components/Reveal'
 import { projects } from '../data'
 
@@ -25,15 +26,22 @@ export default function ProjectPage() {
   const currentIndex = projects.findIndex((item) => item.slug === slug)
   const nextProject = projects[(currentIndex + 1) % projects.length]
   const cover = project.visuals[0]
+  const isYijiajia = project.slug === 'yijiajia'
+
+  useEffect(() => {
+    if (!isYijiajia) return undefined
+    document.body.classList.add('case-yijiajia-mode')
+    return () => document.body.classList.remove('case-yijiajia-mode')
+  }, [isYijiajia])
 
   return (
-    <main id="main-content" className="case-page" tabIndex="-1">
+    <main id="main-content" className={isYijiajia ? 'case-page case-yijiajia' : 'case-page'} tabIndex="-1">
       <section className="case-hero section-shell">
         <div className="case-hero-copy">
           <Link className="back-link" to="/#selected-work"><ArrowLeft size={18} />返回案例列表</Link>
-          <p className="project-kind">{project.kind}</p>
+          <p className="project-kind">{isYijiajia ? 'AGENT & AI PRODUCTS / B 端工作流' : project.kind}</p>
           <h1>{project.title}</h1>
-          <p className="case-subtitle">{project.subtitle}</p>
+          <p className="case-subtitle">{isYijiajia ? '从单一问答入口，走向多智能体协作与 AI-Human 服务闭环。' : project.subtitle}</p>
           <div className="case-actions">
             {project.externalLink && (
               <a className="button button-primary" href={project.externalLink.href} target="_blank" rel="noreferrer">
