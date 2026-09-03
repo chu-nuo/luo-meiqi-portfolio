@@ -22,6 +22,7 @@ export default function ProjectPage() {
   const { slug } = useParams()
   const isYijiajia = slug === 'yijiajia'
   const isAiEnglish = slug === 'ai-english'
+  const isEditorial = slug === 'changan' || slug === 'yangyuanqing'
   const [zoomedVisual, setZoomedVisual] = useState(null)
   const project = projects.find((item) => item.slug === slug)
 
@@ -32,11 +33,11 @@ export default function ProjectPage() {
   const cover = project.visuals[0]
   const zoomedItem = project.visuals.find((visual) => visual.src === zoomedVisual)
   useEffect(() => {
-    if (!isYijiajia && !isAiEnglish) return undefined
-    const modeClass = isYijiajia ? 'case-yijiajia-mode' : 'case-ai-english-mode'
+    if (!isYijiajia && !isAiEnglish && !isEditorial) return undefined
+    const modeClass = isYijiajia ? 'case-yijiajia-mode' : isAiEnglish ? 'case-ai-english-mode' : 'case-editorial-mode'
     document.body.classList.add(modeClass)
     return () => document.body.classList.remove(modeClass)
-  }, [isYijiajia, isAiEnglish])
+  }, [isYijiajia, isAiEnglish, isEditorial])
 
   useEffect(() => {
     if (!zoomedVisual) return undefined
@@ -48,7 +49,7 @@ export default function ProjectPage() {
   }, [zoomedVisual])
 
   return (
-    <main id="main-content" className={isYijiajia ? 'case-page case-yijiajia' : isAiEnglish ? 'case-page case-ai-english' : 'case-page'} tabIndex="-1">
+    <main id="main-content" className={isYijiajia ? 'case-page case-yijiajia' : isAiEnglish ? 'case-page case-ai-english' : isEditorial ? 'case-page case-editorial' : 'case-page'} tabIndex="-1">
       <section className="case-hero section-shell">
         <div className="case-hero-copy">
           <Link className="back-link" to="/#selected-work"><ArrowLeft size={18} />返回案例列表</Link>
