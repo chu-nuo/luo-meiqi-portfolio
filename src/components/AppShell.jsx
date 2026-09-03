@@ -48,6 +48,7 @@ export default function AppShell({ children }) {
   }, [location.hash, location.pathname])
 
   const homeHref = import.meta.env.BASE_URL
+  const isProjectRoute = location.pathname.startsWith('/projects/')
   const navItems = [
     { label: '案例', href: `${homeHref}#selected-work` },
     { label: '关于', href: `${homeHref}#about` },
@@ -58,7 +59,7 @@ export default function AppShell({ children }) {
   return (
     <>
       <a className="skip-link" href="#main-content">跳到主要内容</a>
-      <header className="site-header">
+      <header className={isProjectRoute ? 'site-header case-site-header' : 'site-header'}>
         <Link className="wordmark" to="/" aria-label="罗美琪作品集首页">
           <span>LMQ</span>
           <small>PRODUCT / AI</small>
