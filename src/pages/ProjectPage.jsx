@@ -7,7 +7,8 @@ import {
   FileText,
 } from '@phosphor-icons/react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Reveal from '../components/Reveal'
 import { projects } from '../data'
 
@@ -19,6 +20,9 @@ const evidenceMeta = {
 
 export default function ProjectPage() {
   const { slug } = useParams()
+  const isYijiajia = slug === 'yijiajia'
+  const isAiEnglish = slug === 'ai-english'
+  const [zoomedVisual, setZoomedVisual] = useState(null)
   const project = projects.find((item) => item.slug === slug)
 
   if (!project) return <Navigate to="/404" replace />
@@ -26,16 +30,25 @@ export default function ProjectPage() {
   const currentIndex = projects.findIndex((item) => item.slug === slug)
   const nextProject = projects[(currentIndex + 1) % projects.length]
   const cover = project.visuals[0]
-  const isYijiajia = project.slug === 'yijiajia'
+  const zoomedItem = project.visuals.find((visual) => visual.src === zoomedVisual)
+  useEffect(() => {
+    if (!isYijiajia && !isAiEnglish) return undefined
+    const modeClass = isYijiajia ? 'case-yijiajia-mode' : 'case-ai-english-mode'
+    document.body.classList.add(modeClass)
+    return () => document.body.classList.remove(modeClass)
+  }, [isYijiajia, isAiEnglish])
 
   useEffect(() => {
-    if (!isYijiajia) return undefined
-    document.body.classList.add('case-yijiajia-mode')
-    return () => document.body.classList.remove('case-yijiajia-mode')
-  }, [isYijiajia])
+    if (!zoomedVisual) return undefined
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setZoomedVisual(null)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [zoomedVisual])
 
   return (
-    <main id="main-content" className={isYijiajia ? 'case-page case-yijiajia' : 'case-page'} tabIndex="-1">
+    <main id="main-content" className={isYijiajia ? 'case-page case-yijiajia' : isAiEnglish ? 'case-page case-ai-english' : 'case-page'} tabIndex="-1">
       <section className="case-hero section-shell">
         <div className="case-hero-copy">
           <Link className="back-link" to="/#selected-work"><ArrowLeft size={18} />返回案例列表</Link>
@@ -129,13 +142,22 @@ export default function ProjectPage() {
             <h2 id="visual-title">用原始产出说明做过什么。</h2>
           </header>
           <div className={`case-gallery gallery-${project.visuals.length}`}>
-            {project.visuals.map((visual) => (
-              <figure key={visual.src} className={visual.portrait ? 'portrait' : ''}>
+            {project.visuals.map((visual) => {
+              const toggleZoom = () => isAiEnglish && setZoomedVisual(visual.src)
+              return (
+              <figure key={visual.src} className={visual.portrait ? 'portrait' : ''} onDoubleClick={toggleZoom} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleZoom() } }} role={isAiEnglish ? 'button' : undefined} tabIndex={isAiEnglish ? 0 : undefined} aria-label={isAiEnglish ? `双击放大${visual.alt}` : undefined}>
                 <img src={visual.src} alt={visual.alt} loading="lazy" />
                 <figcaption>{visual.caption}</figcaption>
               </figure>
-            ))}
+            )})}
           </div>
+          {isAiEnglish && zoomedItem && createPortal(
+            <div className="case-image-lightbox" role="dialog" aria-modal="true" aria-label="放大的英语读书 UI" onDoubleClick={() => setZoomedVisual(null)}>
+              <img src={zoomedItem.src} alt={zoomedItem.alt} />
+              <p>双击缩小 · Esc 关闭</p>
+            </div>,
+            document.body,
+          )}
         </section>
       </Reveal>
 
