@@ -174,10 +174,6 @@ function Hero() {
       </div>
       <div className="hero-stage">
         <OrbitNav />
-        <figure className="hero-cover">
-          <img src={`${import.meta.env.BASE_URL}projects/changan/cover.webp`} alt="长安的荔枝主题团建策划案封面" />
-          <figcaption><span className="mono">SELECTED WORK / 03</span><strong>长安的荔枝</strong></figcaption>
-        </figure>
       </div>
     </section>
   )
@@ -244,44 +240,42 @@ function About() {
 }
 
 function SelectedWork() {
-  const [active, setActive] = useState(0)
   const tabs = [
     { label: '易佳佳', title: '把门店销售、产品咨询与售后排障组织成 AI-Human 服务闭环。', points: ['Agent 2.0 + Workflow', '30+ 份知识材料治理', 'Pad 消息中心与后台配置', 'PRD / Figma 原型 / 联调验收'], project: projects[0] },
     { label: '百词斩 · 英语读书', title: '把原文解析、AI 任务生成、难度分级与挑战打卡串成每日学习闭环。', points: ['20+ 竞品任务系统', '每日任务与进度状态', 'AI 个性化任务生成', '次日留存 +15% / 周活跃 +20%'], project: projects[1] },
     { label: '陀螺旅行', title: '把文化 IP 转化为可执行、可计分、可复盘的线下团建体验。', points: ['200+ 样本调研', '4 个用户角色', '3 条主支线任务', '3 轮设计与执行迭代'], project: projects[2] },
     { label: '大广赛', title: '用“五色青丝”串联端午文化、品牌体验与校园传播。', points: ['3 人团队统筹', '限定礼盒与快闪店', 'H5 测试与传播矩阵', '省级三等奖'], project: projects[3] },
   ]
-  const item = tabs[active]
-
   return (
     <section id="selected-work" className="replica-section work-section">
       <SectionHeading index="02" title="Selected Work" text="四个项目覆盖 AI 工作台、英语学习、线下团建与整合营销，对应求职目录中的真实材料。" />
-      <div className="work-layout">
-        <div className="work-tabs" role="tablist" aria-label="精选作品">
-          {tabs.map((tab, index) => (
-            <button key={tab.label} type="button" role="tab" aria-selected={active === index} className={active === index ? 'work-tab active' : 'work-tab'} onClick={() => setActive(index)}>
-              <span className="mono">0{index + 1}</span>
-              <strong>{tab.label}</strong>
-              <ArrowRight size={18} />
-            </button>
-          ))}
-        </div>
-        <article className="work-detail work-text-detail" key={item.label}>
-          <div className="work-detail-intro">
-            <p className="mono eyebrow">PROJECT / 0{active + 1}</p>
-            <p className="work-detail-kind">{item.project.kind}</p>
-            <h3>{item.project.title}</h3>
-            <p className="work-detail-summary">{item.title}</p>
-          </div>
-          <div className="work-detail-copy">
-            <p className="mono eyebrow">WHAT I BUILT</p>
-            <p className="work-detail-lead">{item.project.lead}</p>
-            <div className="work-function-list">
-              {item.points.map((point) => <span key={point}>{point}</span>)}
+      <div className="work-stack">
+        {tabs.map((item, index) => (
+          <article className="work-entry" key={item.label}>
+            <header className="work-entry-heading">
+              <span className="mono work-entry-index">0{index + 1}</span>
+              <div>
+                <p className="mono work-detail-kind">{item.project.kind}</p>
+                <h3>{item.project.title}</h3>
+                <p className="work-detail-summary">{item.title}</p>
+              </div>
+              <Link className="work-entry-link" to={`/projects/${item.project.slug}`} aria-label={`进入${item.project.title}工作页面`}><ArrowRight size={22} /></Link>
+            </header>
+            <div className="work-entry-body">
+              <div>
+                <p className="mono eyebrow">WHAT I BUILT</p>
+                <p className="work-detail-lead">{item.project.lead}</p>
+              </div>
+              <div className="work-entry-functions">
+                <p className="mono eyebrow">FUNCTIONS / OUTPUTS</p>
+                <div className="work-function-list">
+                  {item.points.map((point) => <span key={point}>{point}</span>)}
+                </div>
+              </div>
+              <div className="work-detail-footer"><span>{item.project.time} · {item.project.role}</span><Link to={`/projects/${item.project.slug}`}>进入工作页面 <ArrowRight size={15} /></Link></div>
             </div>
-            <div className="work-detail-footer"><span>{item.project.time} · {item.project.role}</span><Link to={`/projects/${item.project.slug}`}>进入工作页面 <ArrowRight size={15} /></Link></div>
-          </div>
-        </article>
+          </article>
+        ))}
       </div>
     </section>
   )
