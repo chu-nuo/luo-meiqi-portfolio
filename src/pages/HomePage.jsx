@@ -163,14 +163,23 @@ function Hero() {
       <InkTrail />
       <div className="hero-left-orb" aria-hidden="true" />
       <div className="hero-copy">
-        <p className="mono eyebrow">AI PRODUCT MANAGER · SELECTED WORK</p>
+        <div className="hero-identity">
+          <p className="mono eyebrow">罗美琪 · 2027 届</p>
+          <p className="hero-role">AI 产品经理 · AI 应用与 0-1 产品方向</p>
+          <p className="hero-status">正在寻找校招产品经理机会 · 意向城市：杭州</p>
+        </div>
         <h1>把复杂问题，<em>做成可体验的产品。</em></h1>
         <p className="hero-lead">{typed}<span className="type-cursor" aria-hidden="true" /></p>
+        <div className="hero-proof" aria-label="核心产品经历">
+          <span><strong>百词斩</strong> 产品实习</span>
+          <span><strong>易佳佳</strong> AI 产品实习</span>
+        </div>
         <div className="hero-actions">
           <a className="replica-button primary" href="#selected-work">查看精选作品 <ArrowRight size={16} /></a>
-          <a className="replica-button secondary" href={`mailto:${profile.email}?subject=简历请求`}><FileText size={16} /> 请求简历</a>
+          <a className="replica-button secondary orbit-button" href={`${import.meta.env.BASE_URL}resume/`} target="_blank" rel="noreferrer"><FileText size={16} /> 查看简历</a>
+          <a className="replica-button tertiary" href={`${import.meta.env.BASE_URL}resume/罗美琪-产品经理简历.pdf`} download="罗美琪-产品经理简历.pdf"><FileText size={16} /> 下载 PDF</a>
         </div>
-        <p className="hero-meta">天津财经大学珠江学院 · 视觉传达设计 · 2027 届 · 意向城市：杭州</p>
+        <p className="hero-meta">天津财经大学珠江学院 · 视觉传达设计 · 用户洞察 / AI Agent / 产品落地</p>
       </div>
       <div className="hero-stage">
         <OrbitNav />
@@ -199,7 +208,7 @@ function StickyNav() {
         <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
       </nav>
       <div className="replica-nav-actions">
-        <a href={`mailto:${profile.email}?subject=简历请求`} aria-label="请求简历"><FileText size={16} /> <span>Résumé</span></a>
+        <a href={`${import.meta.env.BASE_URL}resume/`} target="_blank" rel="noreferrer" aria-label="查看罗美琪简历"><FileText size={16} /> <span>Résumé</span></a>
         <a href={`mailto:${profile.email}`} aria-label="发送邮件"><EnvelopeSimple size={17} /></a>
         <button type="button" className="replica-menu-button" aria-label={menuOpen ? '关闭导航菜单' : '打开导航菜单'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={20} /> : <List size={20} />}</button>
       </div>
