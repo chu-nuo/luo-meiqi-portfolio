@@ -5,10 +5,8 @@ import { experiences, profile, projects } from '../data'
 import '../replica.css'
 
 const sections = [
-  ['selected-work', 'Selected Work'],
-  ['about', 'About'],
   ['experience', 'Experience'],
-  ['photography', 'Photography'],
+  ['selected-work', 'Work'],
   ['contact', 'Contact'],
 ]
 
@@ -106,8 +104,8 @@ function OrbitNav() {
   const [hovered, setHovered] = useState('')
   const [exploding, setExploding] = useState(false)
   const orbitItems = useMemo(() => sections.flatMap(([id, label], index) => [
-    { id, label, offset: `${index * 17}%` },
-    { id: `${id}-dot`, label: '·', offset: `${index * 17 + 8}%`, decorative: true },
+    { id, label, offset: `${index * (100 / sections.length)}%` },
+    { id: `${id}-dot`, label: '·', offset: `${index * (100 / sections.length) + 50 / sections.length}%`, decorative: true },
   ]), [])
   const navigate = (id) => {
     setExploding(true)
@@ -201,10 +199,8 @@ function StickyNav() {
     <header className={menuOpen ? 'replica-nav menu-open' : 'replica-nav'}>
       <a href="#hero" className="replica-brand"><strong>Grace / LMQ</strong><span>AI PRODUCT MANAGER</span></a>
       <nav id="mobile-navigation" aria-label="主导航">
-        <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
-        <a href="#selected-work" onClick={() => setMenuOpen(false)}>Work</a>
         <a href="#experience" onClick={() => setMenuOpen(false)}>Experience</a>
-        <a href="#photography" onClick={() => setMenuOpen(false)}>Photography</a>
+        <a href="#selected-work" onClick={() => setMenuOpen(false)}>Work</a>
         <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
       </nav>
       <div className="replica-nav-actions">
@@ -249,63 +245,54 @@ function About() {
 }
 
 function SelectedWork() {
-  const tabs = [
-    { label: '易佳佳', title: '把门店销售、产品咨询与售后排障组织成 AI-Human 服务闭环。', points: ['Agent 2.0 + Workflow', '30+ 份知识材料治理', 'Pad 消息中心与后台配置', 'PRD / Figma 原型 / 联调验收'], project: projects[0] },
-    { label: '百词斩 · 英语读书', title: '把原文解析、AI 任务生成、难度分级与挑战打卡串成每日学习闭环。', points: ['20+ 竞品任务系统', '每日任务与进度状态', 'AI 个性化任务生成', '次日留存 +15% / 周活跃 +20%'], project: projects[1] },
-    { label: '陀螺旅行', title: '把文化 IP 转化为可执行、可计分、可复盘的线下团建体验。', points: ['200+ 样本调研', '4 个用户角色', '3 条主支线任务', '3 轮设计与执行迭代'], project: projects[2] },
-    { label: '大广赛', title: '用“五色青丝”串联端午文化、品牌体验与校园传播。', points: ['3 人团队统筹', '限定礼盒与快闪店', 'H5 测试与传播矩阵', '省级三等奖'], project: projects[3] },
+  const coreCases = [
+    { title: '把门店销售、产品咨询与售后排障组织成 AI-Human 服务闭环。', points: ['Agent 2.0 + Workflow', '30+ 份知识材料治理', 'Pad 消息中心与后台配置', 'PRD / Figma 原型 / 联调验收'], project: projects[0] },
+    { title: '把原文解析、AI 任务生成、难度分级与挑战打卡串成每日学习闭环。', points: ['20+ 竞品任务系统', '每日任务与进度状态', 'AI 个性化任务生成', '功能按期上线 / AI 接口集成'], project: projects[1] },
   ]
+  const supportingCases = [
+    { title: '把文化 IP 转化为可执行、可计分、可复盘的线下团建体验。', points: ['200+ 样本调研', '4 个用户角色', '3 条主支线任务', '3 轮设计与执行迭代'], project: projects[2] },
+    { title: '用“五色青丝”串联端午文化、品牌体验与校园传播。', points: ['3 人团队统筹', '限定礼盒与快闪店', 'H5 测试与传播矩阵', '省级三等奖'], project: projects[3] },
+  ]
+  const renderCoreCase = (item, index) => (
+    <article className="work-entry work-entry-core" key={item.project.slug}>
+      <header className="work-entry-heading">
+        <span className="mono work-entry-index">0{index + 1}</span>
+        <div>
+          <p className="mono work-detail-kind">{item.project.kind}</p>
+          <h3>{item.project.title}</h3>
+          <p className="work-detail-summary">{item.title}</p>
+        </div>
+        <Link className="work-entry-link" to={`/projects/${item.project.slug}`} aria-label={`进入${item.project.title}工作页面`}><ArrowRight size={22} /></Link>
+      </header>
+      <div className="work-entry-body">
+        <div><p className="mono eyebrow">WHAT I BUILT</p><p className="work-detail-lead">{item.project.lead}</p></div>
+        <div className="work-entry-functions"><p className="mono eyebrow">FUNCTIONS / OUTPUTS</p><div className="work-function-list">{item.points.map((point) => <span key={point}>{point}</span>)}</div></div>
+        <div className="work-detail-footer"><span>{item.project.time} · {item.project.role}</span><Link to={`/projects/${item.project.slug}`}>查看案例 <ArrowRight size={15} /></Link></div>
+      </div>
+    </article>
+  )
+  const renderSupportingCase = (item, index) => (
+    <article className="supporting-work-row" key={item.project.slug}>
+      <span className="mono supporting-work-index">0{index + 1}</span>
+      <div><p className="mono work-detail-kind">{item.project.kind}</p><h3>{item.project.title}</h3><p>{item.title}</p></div>
+      <Link to={`/projects/${item.project.slug}`} aria-label={`进入${item.project.title}工作页面`}><ArrowRight size={20} /></Link>
+    </article>
+  )
   return (
     <section id="selected-work" className="replica-section work-section">
-      <SectionHeading index="02" title="Selected Work" text="四个项目覆盖 AI 工作台、英语学习、线下团建与整合营销，对应求职目录中的真实材料。" />
-      <div className="work-stack">
-        {tabs.map((item, index) => (
-          <article className="work-entry" key={item.label}>
-            <header className="work-entry-heading">
-              <span className="mono work-entry-index">0{index + 1}</span>
-              <div>
-                <p className="mono work-detail-kind">{item.project.kind}</p>
-                <h3>{item.project.title}</h3>
-                <p className="work-detail-summary">{item.title}</p>
-              </div>
-              <Link className="work-entry-link" to={`/projects/${item.project.slug}`} aria-label={`进入${item.project.title}工作页面`}><ArrowRight size={22} /></Link>
-            </header>
-            <div className="work-entry-body">
-              <div>
-                <p className="mono eyebrow">WHAT I BUILT</p>
-                <p className="work-detail-lead">{item.project.lead}</p>
-              </div>
-              <div className="work-entry-functions">
-                <p className="mono eyebrow">FUNCTIONS / OUTPUTS</p>
-                <div className="work-function-list">
-                  {item.points.map((point) => <span key={point}>{point}</span>)}
-                </div>
-              </div>
-              <div className="work-detail-footer"><span>{item.project.time} · {item.project.role}</span><Link to={`/projects/${item.project.slug}`}>进入工作页面 <ArrowRight size={15} /></Link></div>
-            </div>
-          </article>
-        ))}
-      </div>
+      <SectionHeading index="02" title="Selected Work" text="先看两段产品实习，再深入两个 AI 核心案例；辅助项目保留为研究、机制与表达能力的补充证据。" />
+      <div className="work-priority-group"><div className="work-subheading"><span className="mono">CORE CASES / 01-02</span><p>重点展示 AI 产品判断、流程设计与可交付成果。</p></div><div className="work-stack">{coreCases.map(renderCoreCase)}</div></div>
+      <div className="work-supporting-group"><div className="work-subheading"><span className="mono">SUPPORTING PROJECTS / 03-04</span><p>作为用户研究、线下机制与整合表达的辅助经历。</p></div><div className="supporting-work-list">{supportingCases.map(renderSupportingCase)}</div></div>
     </section>
   )
 }
 
 function Experience() {
-  const [active, setActive] = useState(0)
+  const productExperiences = experiences.slice(0, 2)
   return (
     <section id="experience" className="replica-section experience-section">
-      <SectionHeading index="03" title="Experience" text="在 AI 门店助手、百词斩英语读书和线下团建中，持续练习把真实需求变成可交付机制。" />
-      <div className="experience-stage">
-        <div className="experience-cards">
-          {experiences.map((item, index) => {
-            const offset = index - active
-            return <button key={item.company} type="button" className={index === active ? 'experience-card current' : 'experience-card'} style={{ '--offset': offset }} onClick={() => setActive(index)} aria-label={`查看 ${item.company} 经历`}>
-              <span className="mono">{item.time}</span><h3>{item.role}</h3><strong>{item.company}</strong><p>{item.summary}</p>
-            </button>
-          })}
-        </div>
-        <div className="experience-controls"><button type="button" onClick={() => setActive(Math.max(0, active - 1))} disabled={active === 0} aria-label="上一段经历"><CaretLeft size={18} /></button><span className="mono">0{active + 1} / 0{experiences.length}</span><button type="button" onClick={() => setActive(Math.min(experiences.length - 1, active + 1))} disabled={active === experiences.length - 1} aria-label="下一段经历"><CaretRight size={18} /></button></div>
-      </div>
+      <SectionHeading index="01" title="Product Experience" text="两段产品实习构成我的主线：从 C 端英语学习走向 B 端 AI 门店工作台。" />
+      <div className="product-experience-grid">{productExperiences.map((item, index) => <article className="product-experience-card" key={item.company}><div className="product-experience-top"><span className="mono">0{index + 1}</span><span className="mono">{item.time}</span></div><h3>{item.company}</h3><strong>{item.role}</strong><p>{item.summary}</p><Link to={`/projects/${projects[index].slug}`}>查看相关案例 <ArrowRight size={15} /></Link></article>)}</div>
     </section>
   )
 }
@@ -425,7 +412,7 @@ function Contact() {
   return (
     <section id="contact" className="replica-section contact-section">
       <Ballpit />
-      <div className="contact-content"><SectionHeading index="05" title="Get in touch" text="如果你正在寻找能把 AI 方案落进真实业务的人，欢迎联系我。" /><div className="contact-links"><a href={`mailto:${profile.email}`}><EnvelopeSimple size={18} /> {profile.email} <ArrowRight size={16} /></a><span><MapPin size={18} /> {profile.city} / Open to Hangzhou</span></div></div>
+      <div className="contact-content"><SectionHeading index="03" title="Get in touch" text="如果你正在寻找能把 AI 方案落进真实业务的人，欢迎联系我。" /><div className="contact-links"><a href={`mailto:${profile.email}`}><EnvelopeSimple size={18} /> {profile.email} <ArrowRight size={16} /></a><span><MapPin size={18} /> {profile.city} / Open to Hangzhou</span></div></div>
     </section>
   )
 }
@@ -436,5 +423,5 @@ export default function HomePage() {
     return () => document.body.classList.remove('replica-mode')
   }, [])
 
-  return <div className="replica-page"><StickyNav /><main id="main-content"><Hero /><About /><SelectedWork /><Experience /><Photography /><Contact /></main><footer className="replica-footer"><strong>Grace / LMQ</strong><span>Finding myself in what I build.</span><small>© {new Date().getFullYear()}</small></footer></div>
+  return <div className="replica-page"><StickyNav /><main id="main-content"><Hero /><Experience /><SelectedWork /><Contact /></main><footer className="replica-footer"><strong>Grace / LMQ</strong><span>Finding myself in what I build.</span><small>© {new Date().getFullYear()}</small></footer></div>
 }
