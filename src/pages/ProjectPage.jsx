@@ -5,6 +5,7 @@ import {
   CheckCircle,
   ClockCounterClockwise,
   FileText,
+  Play,
 } from '@phosphor-icons/react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
@@ -31,6 +32,7 @@ export default function ProjectPage() {
   const currentIndex = projects.findIndex((item) => item.slug === slug)
   const nextProject = projects[(currentIndex + 1) % projects.length]
   const cover = project.visuals[0]
+  const galleryVisuals = isYijiajia ? project.visuals.slice(1) : project.visuals
   const zoomedItem = project.visuals.find((visual) => visual.src === zoomedVisual)
   useEffect(() => {
     if (!isYijiajia && !isAiEnglish && !isEditorial) return undefined
@@ -177,7 +179,7 @@ export default function ProjectPage() {
             <h2 id="visual-title">用原始产出说明做过什么。</h2>
           </header>
           <div className={`case-gallery gallery-${project.visuals.length}`}>
-            {project.visuals.map((visual) => {
+            {galleryVisuals.map((visual) => {
               const toggleZoom = () => isAiEnglish && setZoomedVisual(visual.src)
               return (
               <figure key={visual.src} className={visual.portrait ? 'portrait' : ''} onDoubleClick={toggleZoom} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleZoom() } }} role={isAiEnglish ? 'button' : undefined} tabIndex={isAiEnglish ? 0 : undefined} aria-label={isAiEnglish ? `双击放大${visual.alt}` : undefined}>
@@ -195,6 +197,47 @@ export default function ProjectPage() {
           )}
         </section>
       </Reveal>
+
+      {project.contributionEvidence && <Reveal>
+        <section className="case-section section-shell contribution-section" aria-labelledby="contribution-title">
+          <header className="case-section-heading">
+            <span>个人贡献证据</span>
+            <h2 id="contribution-title">不只展示入口，也展示我如何把问题接住。</h2>
+          </header>
+          <div className="contribution-list">
+            {project.contributionEvidence.map((item) => (
+              <article key={item.label} className="contribution-card">
+                <div className="contribution-copy">
+                  <span>{item.label}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                  {item.evidence && <pre>{item.evidence}</pre>}
+                </div>
+                {item.src && (
+                  <div className="contribution-media">
+                    <img src={item.src} alt={item.alt} loading="lazy" />
+                    {item.secondarySrc && <img src={item.secondarySrc} alt={item.secondaryAlt} loading="lazy" />}
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      </Reveal>}
+
+      {project.videoPlaceholder && <Reveal>
+        <section className="case-section section-shell case-video-placeholder" aria-labelledby="video-title">
+          <div className="video-placeholder-box">
+            <div className="video-placeholder-mark" aria-hidden="true"><Play size={34} weight="fill" /></div>
+            <div>
+              <span>{project.videoPlaceholder.label}</span>
+              <h2 id="video-title">{project.videoPlaceholder.title}</h2>
+              <p>{project.videoPlaceholder.text}</p>
+            </div>
+            <small>VIDEO / PLACEHOLDER</small>
+          </div>
+        </section>
+      </Reveal>}
 
       {project.validation && <Reveal>
         <section className="case-section section-shell" aria-labelledby="validation-title">

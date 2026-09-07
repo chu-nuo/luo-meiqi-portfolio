@@ -64,6 +64,18 @@ export const projects = [
       { label: '质量评测', text: 'PRD 预设路由准确率、产品与售后回答准确率、角色不串戏率和合规拦截率等评测口径，作为后续灰度验收清单。' },
       { label: '降级处理', text: 'AI 服务不可用时入口提示暂不可用并保留 400 售后电话；涉及安全的问题不继续自助操作，转人工处理。' },
     ],
+    contributionEvidence: [
+      { label: '消息中心状态图', title: '把 AI 未解决后的状态继续设计下去', text: '我独立负责 Pad 消息中心与后台配置，明确未读人工回复、小红点、工单状态和已读回执，保证用户知道问题是否有人接住。' },
+      { label: '后台配置流程', title: '让知识与消息状态可配置、可追踪', text: '后台配置列表和详情原型承接知识治理与消息配置，支持研发、测试和 UI 联调围绕同一套状态验收。', src: assetPath('projects/yijiajia/admin-list.png'), alt: '易佳佳后台消息配置列表原型', secondarySrc: assetPath('projects/yijiajia/admin-detail.png'), secondaryAlt: '易佳佳后台消息配置原型' },
+      { label: '知识清洗前后', title: '先清洗来源，再让分身检索', text: '知识材料进入知识库前需要 Markdown 清洗、YAML 标签和合规词替换；按业务层级、角色、机型和优先级限制检索范围，避免把脏数据直接交给 Agent。', evidence: '清洗前：来源混杂、章节和责任不清。\n清洗后：按 product / error / maintain / sales 等类别分层，并补充 role、model、priority 等标签。' },
+      { label: '典型失败问答', title: '失败不是结束，而是分流信号', text: '产品专家遇到故障类问题引导至售后专家；售后专家无法自助或涉及安全时，先暂停操作并回到主智能体提单，不允许 AI 猜测参数或让用户自行拆机。', evidence: '用户反馈“未解决” → 补充说明与附件 → 创建唯一工单 → 飞书通知售后 → 人工回复同步 Pad → 用户查看后清除小红点。' },
+      { label: '测试与验收记录', title: '用状态、幂等和边界验收', text: '围绕工单状态、重复提交、人工回复同步、未读回执、飞书重试和安全降级设计验收点。当前可公开确认：消息中心方案已完成测试；效果数据仍待补充。' },
+    ],
+    videoPlaceholder: {
+      label: '操作录屏预留',
+      title: '易佳佳操作录屏',
+      text: '这里预留真实操作录屏位置。后续补充视频文件后，可展示从分身选择、问题路由、消息中心到转人工的完整操作路径。',
+    },
     outputs: [
       '多智能体产品方案、PRD 与交互原型',
       '知识分层、清洗、标签与合规治理规范',
@@ -83,10 +95,14 @@ export const projects = [
     flow: ['业务提问', '主智能体识别', '专家处理', '无解转工单', '人工回复', '知识回流'],
     visuals: [
       {
-        src: assetPath('projects/yijiajia/current-expert-home.png'),
-        alt: '易佳佳当前版本的多智能体入口界面',
-        caption: '当前版本智能体入口，展示角色选择、建议问题与语音入口。画面不含门店或顾客数据，最终呈现以实际版本为准。',
+        src: assetPath('projects/yijiajia/home.png'),
+        alt: '易佳佳首页与多智能体入口界面',
+        caption: '顶部仅保留入口概览；正文重点展示消息中心、后台配置与异常闭环。',
       },
+      { src: assetPath('projects/yijiajia/message-center.png'), alt: '易佳佳消息中心页面', caption: '消息中心状态与人工回复可见性。' },
+      { src: assetPath('projects/yijiajia/admin-list.png'), alt: '易佳佳后台消息配置列表原型', caption: '后台消息配置列表原型。' },
+      { src: assetPath('projects/yijiajia/admin-detail.png'), alt: '易佳佳后台消息配置原型', caption: '后台消息配置详情原型。' },
+      { src: assetPath('projects/yijiajia/conversation.png'), alt: '易佳佳对话页', caption: '对话页与专家分流后的交互状态。' },
     ],
   },
   {
