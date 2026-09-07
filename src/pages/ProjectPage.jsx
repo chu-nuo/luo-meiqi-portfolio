@@ -111,11 +111,45 @@ export default function ProjectPage() {
         </section>
       </Reveal>
 
-      <Reveal>
+      {project.discovery && <Reveal>
+        <section className="case-section section-shell" aria-labelledby="discovery-title">
+          <header className="case-section-heading">
+            <span>问题发现与证据</span>
+            <h2 id="discovery-title">{isYijiajia ? '从门店工作流定位断点。' : '从学习阻力定义任务。'}</h2>
+          </header>
+          <div className="judgement-list">
+            {project.discovery?.map((item, index) => (
+              <article key={item.label}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <div><h3>{item.label}</h3><p>{item.text}</p></div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </Reveal>}
+
+      {project.tradeoffs && <Reveal>
         <section className="case-section section-shell" aria-labelledby="decision-title">
           <header className="case-section-heading">
-            <span>关键判断</span>
-            <h2 id="decision-title">机制比功能数量更重要。</h2>
+            <span>方案对比与关键取舍</span>
+            <h2 id="decision-title">{isYijiajia ? '先确定边界，再决定技术形态。' : '让任务既稳定，又因人而异。'}</h2>
+          </header>
+          <div className="tradeoff-grid">
+            {project.tradeoffs?.map((item) => (
+              <article key={item.label}>
+                <h3>{item.label}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </Reveal>}
+
+      <Reveal>
+        <section className="case-section section-shell" aria-labelledby="solution-title">
+          <header className="case-section-heading">
+            <span>最终方案</span>
+            <h2 id="solution-title">{isYijiajia ? '把专家、知识与人工串成闭环。' : '把每日学习变成一条连续路径。'}</h2>
           </header>
           <div className="decision-grid">
             {project.solution.map((item) => (
@@ -161,6 +195,23 @@ export default function ProjectPage() {
           )}
         </section>
       </Reveal>
+
+      {project.validation && <Reveal>
+        <section className="case-section section-shell" aria-labelledby="validation-title">
+          <header className="case-section-heading">
+            <span>测试、验收与迭代</span>
+            <h2 id="validation-title">{isYijiajia ? '把异常路径也纳入验收。' : '用交付与指标验证闭环。'}</h2>
+          </header>
+          <div className="validation-grid">
+            {project.validation?.map((item) => (
+              <article key={item.label}>
+                <strong>{item.label}</strong>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </Reveal>}
 
       <Reveal>
         <section className="case-section section-shell" aria-labelledby="result-title">
